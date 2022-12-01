@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -35,12 +36,12 @@ public class SearchCar {
 		first item that match "BMW x5"*/
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		Select carType = new Select(driver.findElement(By.id("PostDynamicFieldModel[Brand][]")));
-		//PassParameters.convertToUpper();
 		carType.selectByValue(PassParameters.carType);
+		
 		driver.findElement(By.xpath("//*[@id=\"landingPostDynamicField\"]/div/button")).click();
 
 		List<WebElement> allResults = driver.findElements(By.className("noEmojiText"));
-		String actualItem;
+		String actualItem="";
 		String expectedItem = "";
 		for (int i = 0; i < allResults.size(); i++) {
 			actualItem = allResults.get(i).getText();
@@ -53,11 +54,18 @@ public class SearchCar {
 		System.out.println("The expected item to be serached :" + expectedItem);
 
 		System.out.println("====================================");
+		driver.findElement(By.xpath("//*[@id=\"searchBox\"]")).sendKeys(expectedItem.trim()+Keys.ENTER);
+		assertSearchResults(expectedItem,actualItem);
+		
+		
+
+	}
+  public void assertSearchResults(String expectedItem,String actualItem)
+  {
 		// This code that verify if the searched item that matches the results in the
 		// search list
-		driver.findElement(By.xpath("//*[@id=\"searchBox\"]")).sendKeys(expectedItem.trim());
-		driver.findElement(By.xpath("//*[@id=\"landingPostDynamicField\"]/div/button")).click();
-
+	   driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	
 		List<WebElement> newItemsAfterSearch = driver.findElements(By.className("noEmojiText"));
 		for (int i = 0; i < newItemsAfterSearch.size(); i++) {
 
@@ -69,8 +77,8 @@ public class SearchCar {
 		} // end of for
 
 		softassertProcess.assertAll();
-	}
-
+	  
+  }
 	public WebDriver runBrowser(String browser, WebDriver driver) {
 		if (browser.equalsIgnoreCase("firefox")) {
 
