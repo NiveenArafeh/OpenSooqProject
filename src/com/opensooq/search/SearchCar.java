@@ -35,8 +35,8 @@ public class SearchCar {
 		first item that match "BMW x5"*/
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		Select carType = new Select(driver.findElement(By.id("PostDynamicFieldModel[Brand][]")));
-		PassParameters.convertToUpper();
-		carType.selectByValue(PassParameters.theItem);
+		//PassParameters.convertToUpper();
+		carType.selectByValue(PassParameters.carType);
 		driver.findElement(By.xpath("//*[@id=\"landingPostDynamicField\"]/div/button")).click();
 
 		List<WebElement> allResults = driver.findElements(By.className("noEmojiText"));
@@ -45,12 +45,12 @@ public class SearchCar {
 		for (int i = 0; i < allResults.size(); i++) {
 			actualItem = allResults.get(i).getText();
 			System.out.println(actualItem);
-			if (actualItem.contains(PassParameters.theItem + " X5")) {
+			if (actualItem.contains(PassParameters.carType +" "+ PassParameters.carModel)) {
 				expectedItem = actualItem;
 				break;
 			}
 		}
-		System.out.println("The searched one is :" + expectedItem);
+		System.out.println("The expected item to be serached :" + expectedItem);
 
 		System.out.println("====================================");
 		// This code that verify if the searched item that matches the results in the
@@ -62,6 +62,7 @@ public class SearchCar {
 		for (int i = 0; i < newItemsAfterSearch.size(); i++) {
 
 			actualItem = newItemsAfterSearch.get(i).getText();
+			System.out.println("The actual item:"+actualItem);
 
 			softassertProcess.assertEquals(actualItem, expectedItem);
 

@@ -1,10 +1,8 @@
 package com.opensooq.search;
 
 public class PassParameters {
-	static String theItem = "bmw";
+	static String carType = "Kia";
+	static String carModel="Picanto";
 
-	public static void convertToUpper() {
-		theItem = theItem.toUpperCase();
 
-	}
 }
